@@ -1,0 +1,33 @@
+# DATOS PERSONALES Y CONTABILIDADES
+**/Cuentas.xlsx
+**/Gastos_detallados.json
+**/perfiles.json
+**/Copias_seguridad/
+**/Datos_Prueba/
+**/Datos_Personales/
+**/backups/
+
+# ARCHIVOS EXCEL
+*.xlsx
+!Plantilla_Cuentas.xlsx
+
+# COPIAS DE SEGURIDAD
+*.zip
+*.log
+
+# CONTRASEÑAS Y CONFIGURACIONES PRIVADAS
+.env
+.env.*
+
+# ARCHIVOS TEMPORALES DE PYTHON
+__pycache__/
+*.pyc
+.venv/
+
+# ARCHIVOS DE COMPILACION
+.compilacion_portable/
+build/
+dist/
+Salida_Portable/
+*.spec
+*.exe
