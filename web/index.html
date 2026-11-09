@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Contabilidad Casa V0.3.11</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<section id="homeScreen" class="home-page">
+  <div class="home-wrap">
+    <div class="home-brand"><span class="home-logo">⌂</span><div><h1>Contabilidad Casa</h1><p>Elige qué contabilidad quieres utilizar</p></div><span class="home-version">V0.3.11</span></div>
+    <div id="homeError" class="home-message" hidden></div>
+    <h2>Mis contabilidades</h2>
+    <div id="profileCards" class="profile-grid"><div class="empty-state">Buscando contabilidades...</div></div>
+    <section class="home-actions">
+      <div class="home-action">
+        <h3>Crear contabilidad nueva</h3>
+        <p>Empieza con un Excel vacío. Los datos y las copias serán independientes.</p>
+        <label for="profileName">Nombre</label>
+        <input id="profileName" maxlength="65" placeholder="Por ejemplo: Casa, Local, Viajes..."/>
+        <div class="home-folder"><button type="button" id="chooseFolder" class="outline-button">Elegir carpeta (opcional)</button><span id="chosenFolder">Carpeta predeterminada</span></div>
+        <button id="createProfile" class="save-button">Crear contabilidad</button>
+      </div>
+      <div class="home-action">
+        <h3>Empezar desde una copia</h3>
+        <p>Recupera en este ordenador una contabilidad exportada anteriormente, sin sustituir las demás.</p>
+        <label for="importName">Nombre (opcional)</label>
+        <input id="importName" maxlength="65" placeholder="Se utilizará el nombre de la copia"/>
+        <button id="importProfile" class="outline-button">Elegir copia ZIP e importar</button>
+        <input id="importInput" type="file" accept=".zip,application/zip" hidden/>
+      </div>
+    </section>
+    <p class="home-foot">Tus archivos no se mezclan: cada contabilidad tiene su propio Cuentas.xlsx, historial de compras y copias de seguridad. Puedes cambiar de ordenador importando un ZIP exportado.</p>
+  </div>
+</section>
+<div class="app-shell" id="workApp" hidden>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">⌂</div><div><div class="brand-name">Contabilidad Casa <span class="version">V0.3.11</span></div><div class="brand-sub">Tu economía familiar, de forma sencilla</div></div></div>
+    <div class="top-actions"><button id="exit" class="top-button top-exit" type="button" title="Cerrar Contabilidad Casa">✕ Cerrar</button><span class="file-mark" id="currentProfileLabel" title="Contabilidad abierta">—</span><button id="backProfiles" class="top-button">Mis contabilidades</button><button id="exportBackup" class="top-button">Guardar copia completa</button><button id="restoreBackup" class="top-button">Recuperar copia</button><input type="file" id="restoreInput" accept=".zip,application/zip" hidden><button id="openExcel" class="top-button" title="Abrir el Excel original de esta aplicación">Abrir Excel</button><a href="/api/download" class="top-button" title="Solo Excel: no contiene categorías propias ni correcciones mensuales de ingresos. Para todo, usa Guardar copia completa.">Descargar Excel</a></div>
+  </header>
+
+  <main class="main">
+    <section class="page-title">
+      <div><div class="eyebrow">GESTIÓN DOMÉSTICA</div><h1>Introduce tus datos o revisa tus gráficas</h1><p>Edita las cifras con comodidad y consulta un resumen anual fácil de entender. Los cambios se guardan en tu contabilidad y se incluyen en las copias completas.</p></div>
+      <div class="select-panel"><div class="select-group"><label for="year">Año</label><select id="year"><option value="2026">2026</option><option value="2027">2027</option></select></div><div class="select-group"><label for="month">Mes</label><select id="month"><option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option><option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option><option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option></select></div></div>
+    </section>
+
+    <section class="totals" aria-label="Resumen del mes">
+      <div class="metric"><div class="metric-icon income-icon">↗</div><div class="metric-label">Ingresos mensuales</div><div class="metric-value" id="incomeValue">—</div><div class="metric-sub">Ingresos habituales y extras</div></div>
+      <div class="metric"><div class="metric-icon expense-icon">↘</div><div class="metric-label">Gastos registrados</div><div class="metric-value" id="expenseValue">—</div><div class="metric-sub" id="expenseCount">Conceptos de este mes</div></div>
+      <div class="metric highlight"><div class="metric-icon available-icon">≋</div><div class="metric-label">Disponible estimado</div><div class="metric-value" id="availableValue">—</div><div class="metric-sub" id="incomeInfo">Ingresos menos gastos</div></div>
+    </section>
+
+    <nav class="tabs" aria-label="Apartados"><button data-tab="expenses" class="tab active"><span class="tab-glyph">▤</span> Gastos del mes</button><button data-tab="incomes" class="tab"><span class="tab-glyph">↗</span> Ingresos</button><button data-tab="banks" class="tab"><span class="tab-glyph">▥</span> Cuentas bancarias</button><button data-tab="details" class="tab"><span class="tab-glyph">✎</span> Anotar compras</button><button data-tab="charts" class="tab"><span class="tab-glyph">◔</span> Gráficas anuales</button></nav>
+
+    <section class="panel">
+      <div class="panel-head"><div><h2 id="sectionTitle">Gastos del mes actual</h2><p id="sectionHint">Introduce los importes que correspondan a este mes.</p></div><div id="panelTools"><input id="search" type="search" placeholder="Buscar concepto..." aria-label="Buscar concepto"></div></div>
+      <div id="content" class="content"></div>
+      <div class="savebar"><div class="save-status"><span id="statusDot" class="status-dot"></span><span id="saveStatus" role="status">Sin cambios pendientes</span><span class="last-edited" id="lastEdited"></span></div><button id="save" class="save-button" disabled>Guardar cambios <span aria-hidden="true">→</span></button></div>
+    </section>
+    <footer class="footer"><span>Las categorías propias y las correcciones mensuales de ingresos se conservan en el historial y en las copias completas ZIP.</span></footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+<script>window.APP_TOKEN='__APP_TOKEN__';</script>
+<script src="/app.js" defer></script>
+</body>
+</html>
