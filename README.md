@@ -47,10 +47,17 @@ El código de Suite CAD V0.4 es independiente y no está incluido aquí.
 - El repositorio contiene fuentes y plantilla sin datos personales; no incluye historiales de compras, Excel reales ni copias de seguridad.
 - La compilación del EXE debe ejecutarse y verificarse en Windows.
 
-## Histórico de la instalación base V0.3.9
+## Versiones y archivos históricos
 
-En [`historico/v0.3.9/`](historico/v0.3.9/) se conservan el proyecto **Inno Setup V0.3.9** y el BAT de compilación original recuperados de los fuentes históricos. El paquete completo de fuentes V0.3.9 se ha recuperado y comprobado fuera de GitHub, pero sus demás ficheros de código todavía no están incorporados al repositorio. No hay ningún `.exe` de V0.3.9 publicado ni una Release que lo contenga. La rama `main` representa la versión V0.3.13 y NO debe presentarse como código V0.3.9.
+| Referencia | Contenido | Estado |
+|---|---|---|
+| `main` | Código fuente **V0.3.13** | Versión actual; no modificar al archivar |
+| [Release `V0.3.9-base`](https://github.com/cronos880-lang/Contabilidad_Casa/releases/tag/V0.3.9-base) | **Instalador Windows V0.3.9** | EXE publicado y SHA-256 coincidente |
+| [`historico/v0.3.9/`](historico/v0.3.9/) | Proyecto Inno Setup, BAT y comprobaciones del instalador | Histórico parcial en main |
+| Rama `historico/v0.3.9-fuentes` | Fuentes auténticas de V0.3.9 | **Pendiente de publicar** |
 
-## Ejecutables, instalador base y actualizaciones
+**Corrección pendiente de la Release:** el asset EXE es V0.3.9, pero la etiqueta `V0.3.9-base` apunta todavía al código actual V0.3.13. Por eso el `Source code (ZIP)` automático de esa Release **NO** representa V0.3.9.
 
-Consulta [Estado de los ejecutables Windows](docs/ESTADO_EJECUTABLES_WINDOWS.md). **El instalador V0.3.9 no está publicado en este repositorio ni en una Release**. La V0.3.9 es la instalación histórica de Windows, sobre la que se aplican las actualizaciones. El script `COMPILAR_PORTABLE_WINDOWS.bat` compila el programa *actual* V0.3.13, **no** recupera el ejecutable original V0.3.9. Para evitar el error de rutas largas de Windows, el entorno de compilación se crea bajo `%LOCALAPPDATA%\CCBuild313`.
+Se ha preparado un paquete verificado con las **fuentes originales V0.3.9** y un script controlado de Git para Windows que publica una rama histórica independiente y corrige la etiqueta sin tocar `main` ni el EXE. La operación remota de la etiqueta requiere ejecutarla en un Git autenticado; no está completada en GitHub.
+
+Los datos reales de cada contabilidad se guardan fuera del programa y **no** se distribuyen en el código fuente. Para la versión actual, `COMPILAR_PORTABLE_WINDOWS.bat` crea V0.3.13, no V0.3.9. 
