@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Contabilidad Casa V0.3.11</title>
+  <title>Contabilidad Casa V0.3.13</title>
   <link rel="stylesheet" href="/app.css">
 </head>
 <body>
 <section id="homeScreen" class="home-page">
   <div class="home-wrap">
-    <div class="home-brand"><span class="home-logo">⌂</span><div><h1>Contabilidad Casa</h1><p>Elige qué contabilidad quieres utilizar</p></div><span class="home-version">V0.3.11</span></div>
+    <div class="home-brand"><span class="home-logo">⌂</span><div><h1>Contabilidad Casa</h1><p>Elige qué contabilidad quieres utilizar</p></div><span class="home-version">V0.3.13</span></div>
     <div id="homeError" class="home-message" hidden></div>
     <h2>Mis contabilidades</h2>
     <div id="profileCards" class="profile-grid"><div class="empty-state">Buscando contabilidades...</div></div>
@@ -37,7 +37,7 @@
 </section>
 <div class="app-shell" id="workApp" hidden>
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">⌂</div><div><div class="brand-name">Contabilidad Casa <span class="version">V0.3.11</span></div><div class="brand-sub">Tu economía familiar, de forma sencilla</div></div></div>
+    <div class="brand"><div class="brand-mark">⌂</div><div><div class="brand-name">Contabilidad Casa <span class="version">V0.3.13</span></div><div class="brand-sub">Tu economía familiar, de forma sencilla</div></div></div>
     <div class="top-actions"><button id="exit" class="top-button top-exit" type="button" title="Cerrar Contabilidad Casa">✕ Cerrar</button><span class="file-mark" id="currentProfileLabel" title="Contabilidad abierta">—</span><button id="backProfiles" class="top-button">Mis contabilidades</button><button id="exportBackup" class="top-button">Guardar copia completa</button><button id="restoreBackup" class="top-button">Recuperar copia</button><input type="file" id="restoreInput" accept=".zip,application/zip" hidden><button id="openExcel" class="top-button" title="Abrir el Excel original de esta aplicación">Abrir Excel</button><a href="/api/download" class="top-button" title="Solo Excel: no contiene categorías propias ni correcciones mensuales de ingresos. Para todo, usa Guardar copia completa.">Descargar Excel</a></div>
   </header>
 
@@ -53,7 +53,7 @@
       <div class="metric highlight"><div class="metric-icon available-icon">≋</div><div class="metric-label">Disponible estimado</div><div class="metric-value" id="availableValue">—</div><div class="metric-sub" id="incomeInfo">Ingresos menos gastos</div></div>
     </section>
 
-    <nav class="tabs" aria-label="Apartados"><button data-tab="expenses" class="tab active"><span class="tab-glyph">▤</span> Gastos del mes</button><button data-tab="incomes" class="tab"><span class="tab-glyph">↗</span> Ingresos</button><button data-tab="banks" class="tab"><span class="tab-glyph">▥</span> Cuentas bancarias</button><button data-tab="details" class="tab"><span class="tab-glyph">✎</span> Anotar compras</button><button data-tab="charts" class="tab"><span class="tab-glyph">◔</span> Gráficas anuales</button></nav>
+    <nav class="tabs" aria-label="Apartados"><button data-tab="expenses" class="tab active"><span class="tab-glyph">▤</span> Gastos del mes</button><button data-tab="incomes" class="tab"><span class="tab-glyph">↗</span> Ingresos</button><button data-tab="banks" class="tab"><span class="tab-glyph">▥</span> Cuentas bancarias</button><button data-tab="details" class="tab"><span class="tab-glyph">✎</span> Anotar compras</button><button data-tab="monthly-chart" class="tab"><span class="tab-glyph">◔</span> Gráfica mensual</button><button data-tab="charts" class="tab"><span class="tab-glyph">◔</span> Gráficas anuales</button></nav>
 
     <section class="panel">
       <div class="panel-head"><div><h2 id="sectionTitle">Gastos del mes actual</h2><p id="sectionHint">Introduce los importes que correspondan a este mes.</p></div><div id="panelTools"><input id="search" type="search" placeholder="Buscar concepto..." aria-label="Buscar concepto"></div></div>

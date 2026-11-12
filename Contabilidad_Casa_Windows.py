@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ventana nativa para Contabilidad Casa V0.3.11 (Windows, WebView2)."""
+"""Ventana nativa para Contabilidad Casa V0.3.13 (Windows, WebView2)."""
 from __future__ import annotations
 
 import threading
@@ -38,7 +38,7 @@ def main():
 
         # Ventana MAXIMIZADA, con barra y botones normales de Windows.
         # No es pantalla completa exclusiva ni navegador con pestañas.
-        window = webview.create_window('Contabilidad Casa V0.3.11', url,
+        window = webview.create_window('Contabilidad Casa V0.3.13', url,
                                        width=1200, height=800, min_size=(900, 600),
                                        maximized=True, background_color='#F5F7FB')
         window.events.shown += lambda: window.maximize()

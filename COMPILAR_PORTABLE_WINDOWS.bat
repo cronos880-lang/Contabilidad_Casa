@@ -3,10 +3,10 @@ setlocal EnableExtensions
 pushd "%~dp0"
 if errorlevel 1 exit /b 1
 if not exist "Salida_Portable" mkdir "Salida_Portable"
-set "LOG=%CD%\COMPILACION_PORTABLE_V0.3.11.log"
-> "%LOG%" echo Contabilidad Casa V0.3.11 - compilacion portable Windows
+set "LOG=%CD%\COMPILACION_PORTABLE_V0.3.13.log"
+> "%LOG%" echo Contabilidad Casa V0.3.13 - compilacion portable Windows
 
-echo Contabilidad Casa V0.3.11 - version portable Windows
+echo Contabilidad Casa V0.3.13 - version portable Windows
 set "PY_CMD="
 where py.exe >nul 2>&1
 if not errorlevel 1 (
@@ -46,7 +46,7 @@ pause
 popd
 exit /b 0
 :FALLO
-echo ERROR. Consulta el archivo COMPILACION_PORTABLE_V0.3.11.log
+echo ERROR. Consulta el archivo COMPILACION_PORTABLE_V0.3.13.log
 pause
 popd
 exit /b 1

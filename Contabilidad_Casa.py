@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contabilidad Casa V0.3.11 — interfaz local y edición conservadora de Cuentas.xlsx.
+"""Contabilidad Casa V0.3.13 — interfaz local y edición conservadora de Cuentas.xlsx.
 No necesita instalar librerías de terceros; conserva las fórmulas y partes del XLSX.
 """
 from __future__ import annotations
@@ -33,7 +33,7 @@ BACKUPS = ROOT / "Copias_seguridad"
 LEDGER = ROOT / "Gastos_detallados.json"
 DETAILED = {31: "Comida", 32: "Extras", 33: "Vacaciones"}
 STATIC = ROOT / "web"
-VERSION = "V0.3.11"
+VERSION = "V0.3.13"
 NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 SHEETS = {2026: "xl/worksheets/sheet1.xml", 2027: "xl/worksheets/sheet2.xml"}

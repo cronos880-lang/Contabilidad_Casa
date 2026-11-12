@@ -65,7 +65,7 @@
   function refreshStatus(){
     const save = $('save');
     const savebar = document.querySelector('.savebar');
-    if(state.tab === 'charts' || state.tab === 'details') {
+    if(state.tab === 'charts' || state.tab === 'monthly-chart' || state.tab === 'details') {
       savebar.hidden = true;
       return;
     }
@@ -687,6 +687,76 @@
     body.appendChild(wrap);
     return card;
   }
+
+  // V0.3.13: el reparto mensual usa cada categoría independiente;
+  // nunca se duplican las compras ya incorporadas a los importes de Gastos del mes.
+  function colorForMonthlyCategory(id){
+    const value=String(id);
+    if(/^base-\d+$/.test(value)){
+      const row=Number(value.slice(5));
+      return 'hsl('+Math.round((210+(row-9)*137.508)%360)+' 69% 47%)';
+    }
+    let hash=2166136261;
+    for(let i=0;i<value.length;i++) hash=Math.imul(hash ^ value.charCodeAt(i),16777619)>>>0;
+    return 'hsl('+Math.round((hash*0.618033988749895)%360)+' 63% 45%)';
+  }
+  function renderMonthlyChart(){
+    const d=state.data;
+    $('sectionTitle').textContent='Gráfica mensual · '+d.monthName+' '+state.year;
+    $('sectionHint').textContent='Selecciona un año y un mes arriba. Se muestra el gasto de cada categoría por separado.';
+    $('panelTools').hidden=true;
+    const entries=[];
+    for(const c of d.categories || []){
+      entries.push({id:'base-'+c.row,name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
+    }
+    for(const c of d.customExpenseCategories || []){
+      entries.push({id:String(c.id),name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
+    }
+    const positives=entries.filter(c=>c.value>0).sort((a,b)=>b.value-a.value);
+    const panel=chartCard('¿En qué categorías se va el dinero en '+d.monthName.toLowerCase()+'?',
+      'Gastos de '+d.monthName.toLowerCase()+' de '+state.year+', desglosados por categoría, incluidas las creadas por ti.');
+    $('content').appendChild(panel.card);
+    if(!positives.length){
+      panel.body.appendChild(emptyChart('No hay gastos registrados en '+d.monthName.toLowerCase()+' de '+state.year+'.'));
+      return;
+    }
+    const total=positives.reduce((sum,c)=>sum+c.value,0);
+    const wrap=document.createElement('div');wrap.className='donut-layout';
+    const svg=svgEl('svg',{viewBox:'0 0 240 240',class:'donut-svg',role:'img','aria-label':'Reparto mensual por categorías'});
+    const cx=120,cy=120,r=78,circ=2*Math.PI*r;
+    let offset=0;
+    positives.forEach(c=>{
+      const frac=c.value/total,len=frac*circ;
+      const circle=svgEl('circle',{cx,cy,r,fill:'none',stroke:colorForMonthlyCategory(c.id),'stroke-width':'28',
+        'stroke-linecap':'butt',transform:'rotate(-90 120 120)',
+        'stroke-dasharray':String(len)+' '+String(Math.max(0,circ-len)), 'stroke-dashoffset':String(-offset)});
+      const title=svgEl('title');
+      title.textContent=c.name+': '+display(c.value)+' ('+(frac*100).toFixed(1)+'%)';
+      circle.appendChild(title);svg.appendChild(circle);offset+=len;
+    });
+    svg.appendChild(svgEl('circle',{cx,cy,r:49,fill:'white'}));
+    const title=svgEl('text',{x:120,y:112,'text-anchor':'middle',class:'donut-center-title'});
+    title.textContent='Total';
+    const value=svgEl('text',{x:120,y:134,'text-anchor':'middle',class:'donut-center-value'});
+    value.textContent=displayCompact(total);svg.append(title,value);wrap.appendChild(svg);
+    const legend=document.createElement('div');legend.className='donut-legend monthly-category-legend';
+    positives.forEach(c=>{
+      const item=document.createElement('div'), name=document.createElement('span');
+      name.className='legend-name';
+      const dot=document.createElement('i');dot.className='legend-dot';dot.style.background=colorForMonthlyCategory(c.id);
+      name.append(dot,document.createTextNode(c.name));
+      const amt=document.createElement('strong');amt.textContent=display(c.value);
+      const percent=document.createElement('small');percent.textContent=(c.value/total*100).toFixed(1)+'%';
+      item.append(name,amt,percent);legend.appendChild(item);
+    });
+    wrap.appendChild(legend);panel.body.appendChild(wrap);
+    if(entries.some(c=>c.value<0)){
+      const note=document.createElement('p');note.className='chart-adjustment-note';
+      note.textContent='Las devoluciones o ajustes negativos no se dibujan como sectores del gráfico.';
+      panel.body.appendChild(note);
+    }
+  }
+
   function renderCharts(){
     const annual = state.annual.get(state.year);
     $('sectionTitle').textContent = `Gráficas anuales · ${state.year}`;
@@ -710,11 +780,12 @@
   function render(){
     $('content').innerHTML = '';
     document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active', el.dataset.tab===state.tab));
-    document.querySelector('.totals').hidden = state.tab === 'charts';
+    document.querySelector('.totals').hidden = state.tab === 'charts' || state.tab === 'monthly-chart';
     if(state.tab === 'expenses') renderExpenses();
     if(state.tab === 'incomes') renderIncomes();
     if(state.tab === 'banks') renderBanks();
     if(state.tab === 'charts') renderCharts();
+    if(state.tab === 'monthly-chart') renderMonthlyChart();
     if(state.tab === 'details') renderDetails();
     $('lastEdited').textContent = state.data ? `Excel actualizado: ${state.data.modified}` : '';
     refreshStatus();

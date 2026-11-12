@@ -108,3 +108,10 @@ button:disabled{cursor:not-allowed;opacity:.46}
 .top-actions .top-exit:hover{background:#a33f4d;border-color:#a33f4d}
 @media(max-width:1050px){.topbar{flex-wrap:wrap}.top-actions{flex-wrap:wrap;justify-content:flex-end}}
 @media(max-width:450px){.top-actions .top-exit{display:inline-flex!important}}
+
+/* V0.3.13: leyenda del gráfico mensual individual por categoría. */
+.chart-adjustment-note{margin:12px 0 0;color:#697a97;font-size:12px;line-height:1.5}
+.monthly-category-legend{max-height:520px;overflow-y:auto;align-content:start;padding-right:5px}
+.monthly-category-legend div{grid-template-columns:minmax(0,1fr) auto auto}
+.monthly-category-legend .legend-name{overflow-wrap:anywhere;line-height:1.4;font-weight:650}
+@media(max-width:780px){.monthly-category-legend{max-height:none;overflow:visible}.monthly-category-legend div{grid-template-columns:minmax(0,1fr) auto auto}.monthly-category-legend small{grid-column:auto}}

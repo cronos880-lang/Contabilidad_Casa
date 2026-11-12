@@ -1,6 +1,6 @@
-# Contabilidad Casa V0.3.11 — código fuente genérico
+# Contabilidad Casa V0.3.13 — código fuente genérico
 
-Esta es la **versión genérica de la aplicación Windows V0.3.11**, separada de las contabilidades reales del usuario. La aplicación permite crear perfiles, registrar gastos e ingresos, exportar/restaurar copias ZIP y mostrar resúmenes. Incluye el código Python, la interfaz web local, el icono y una plantilla XLSX **sin importes ni perfiles**.
+Esta es la **versión genérica de la aplicación Windows V0.3.13**, separada de las contabilidades reales del usuario. La aplicación permite crear perfiles, registrar gastos e ingresos, exportar/restaurar copias ZIP y mostrar resúmenes. Incluye el código Python, la interfaz web local, el icono y una plantilla XLSX **sin importes ni perfiles**.
 
 ## Contenido
 
@@ -32,6 +32,17 @@ La plantilla distribuida en este proyecto no contiene datos económicos, y los i
 
 ## Estado de distribución
 
-La V0.3.11 ha sido probada en Windows por el usuario mediante actualización desde V0.3.9. **No se ha validado todavía un instalador completo V0.3.11 construido desde cero.** El script portable es una ayuda de compilación, no un instalador Inno Setup y no debe confundirse con una Release definitiva.
+La V0.3.13 ha sido probada en Windows por el usuario mediante actualización desde V0.3.9. **No se ha validado todavía un instalador completo V0.3.13 construido desde cero.** El script portable es una ayuda de compilación, no un instalador Inno Setup y no debe confundirse con una Release definitiva.
 
 El código de Suite CAD V0.4 es independiente y no está incluido aquí.
+
+
+## Cambios de V0.3.13 (12/11/2026)
+
+- Nueva pestaña **Gráfica mensual**: gráfico de anillo por **categoría individual**, no solo por grupo.
+- Selección de año/mes, incluye categorías originales y personalizadas activas con gasto, importes y porcentajes.
+- No duplica anotaciones: toma los totales de Gastos del mes; muestra aviso si hay ajustes negativos.
+- **Gráficas anuales** sin cambios en su agrupación original.
+- Para actualizar el ejecutable instalado de V0.3.11 a V0.3.13, se distribuye un actualizador Windows independiente. **No** copiar solo archivos Python al programa PyInstaller.
+- El repositorio contiene fuentes y plantilla sin datos personales; no incluye historiales de compras, Excel reales ni copias de seguridad.
+- La compilación del EXE debe ejecutarse y verificarse en Windows.
