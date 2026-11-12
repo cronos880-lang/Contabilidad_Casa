@@ -1,15 +1,15 @@
-# Verificación de publicación: V0.3.13
+# Verificación de publicación — Contabilidad Casa
 
-- [x] Código fuente e interfaz V0.3.13 en `main`.
-- [x] Gráfica mensual por categorías individuales y gráfica anual por grupos en el código.
-- [x] Plantilla de datos genérica, sin contabilidades personales.
-- [x] `.gitignore` excluye Excel de usuario, historiales, backups y binarios .exe.
-- [x] Compilación portátil configurada para usar una ruta corta bajo `%LOCALAPPDATA%`.
-- [ ] Compilar y probar en Windows el EXE de V0.3.13 generado por el script actualizado.
-- [ ] Confirmar en Windows actualización completa de la instalación histórica V0.3.9 (que puede estar ejecutando V0.3.10).
-- [ ] Comprobar la firma/seguridad y verificar checksum del instalador base V0.3.9 antes de publicarlo.
-- [ ] Publicar una Release con el instalador V0.3.9 si se dispone del archivo original revisado.
+- [x] `main` contiene fuentes de la V0.3.13.
+- [x] La gráfica mensual V0.3.13 muestra categorías individuales.
+- [x] El instalador V0.3.9 está publicado como asset de la Release `V0.3.9-base`.
+- [x] Tamaño y SHA-256 del EXE de GitHub coinciden con el archivo original recibido.
+- [x] Plantilla de Excel genérica sin movimientos reales.
+- [x] Las fuentes originales V0.3.9 se han recuperado y verificado localmente.
+- [x] Se ha preparado una subida a rama histórica separada, sin afectar `main`.
+- [ ] Ejecutar la subida de las fuentes V0.3.9 a `historico/v0.3.9-fuentes`.
+- [ ] Cambiar la etiqueta de la Release para que el `Source code (ZIP)` corresponda a V0.3.9.
+- [ ] Analizar el instalador en Windows mediante Microsoft Defender y verificar funcionamiento.
+- [ ] Probar compilación Windows V0.3.13 por el procedimiento de ruta corta.
 
-**Estado comprobado en GitHub:** no hay ninguna Release y no existe archivo `.exe` en la rama `main`. Es una ausencia, no una verificación de que el instalador V0.3.9 esté disponible.
-
-**Importante:** los ejecutables instalados en el PC del usuario no son accesibles desde este repositorio. No subir datos económicos reales.
+**Advertencia:** mientras la etiqueta siga en el commit V0.3.13, el `Source code (ZIP)` automático de la Release **no** es V0.3.9, aunque su EXE sí sea correcto.
