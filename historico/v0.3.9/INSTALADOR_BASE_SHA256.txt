@@ -1,0 +1,16 @@
+Contabilidad Casa V0.3.9 - Instalador original Windows
+Fecha de comprobacion: 12/11/2026
+Archivo: Instalar_Contabilidad_Casa_V0.3.9.exe
+Tamano en bytes: 17117337
+SHA-256: c7b7aece9eb135e5c56cd9d0731c036e937f9f160425d4540edcc20fffb67aa0
+Estructura: instalador Inno Setup (datos de instalacion 6.7.0)
+Version del producto en los metadatos PE: 0.3.9
+Firma Authenticode: no encontrada (directorio de certificados PE vacio)
+Estado: archivo recibido y comprobado estaticamente, sin ejecutarlo.
+Seguridad: NO equivale a un analisis antivirus ni a una prueba en Windows.
+Publicacion de EXE en GitHub: PENDIENTE. No hay Release ni asset publicado.
+
+Para verificar la copia local en Windows (PowerShell):
+Get-FileHash -Algorithm SHA256 -Path '.\Instalar_Contabilidad_Casa_V0.3.9.exe'
+
+Para su distribucion, analizar con Microsoft Defender y cargar el EXE en Assets de una nueva Release v0.3.9-base, documentando esta suma SHA-256.
