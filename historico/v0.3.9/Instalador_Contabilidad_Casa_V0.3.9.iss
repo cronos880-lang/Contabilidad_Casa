@@ -1,4 +1,4 @@
-; Contabilidad Casa V0.3.9 | instalador Inno Setup 6 por usuario.
+﻿; Contabilidad Casa V0.3.9 | instalador Inno Setup 6 por usuario.
 ; PROGRAMA: carpeta de instalacion | DATOS: perfil de Windows/documentos.
 ; Sin PowerShell, sin VBS, sin comandos codificados, sin descargas ocultas.
 #define AppName "Contabilidad Casa"
