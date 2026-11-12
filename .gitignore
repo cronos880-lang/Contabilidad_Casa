@@ -31,3 +31,6 @@ dist/
 Salida_Portable/
 *.spec
 *.exe
+
+# SALIDAS DE COMPILACION V0.3.13
+Salida_Portable_V0.3.13/

@@ -32,7 +32,7 @@ La plantilla distribuida en este proyecto no contiene datos económicos, y los i
 
 ## Estado de distribución
 
-La V0.3.13 ha sido probada en Windows por el usuario mediante actualización desde V0.3.9. **No se ha validado todavía un instalador completo V0.3.13 construido desde cero.** El script portable es una ayuda de compilación, no un instalador Inno Setup y no debe confundirse con una Release definitiva.
+La V0.3.13 está publicada como **código fuente**, pero aún no se ha confirmado una compilación e instalación final satisfactoria en Windows. **No se ha validado todavía un instalador completo V0.3.13 construido desde cero.** El script portable es una ayuda de compilación, no un instalador Inno Setup y no debe confundirse con una Release definitiva.
 
 El código de Suite CAD V0.4 es independiente y no está incluido aquí.
 
@@ -46,3 +46,7 @@ El código de Suite CAD V0.4 es independiente y no está incluido aquí.
 - **Instalación base V0.3.9** (Inno Setup): el actualizador lleva directamente la versión que se esté ejecutando, por ejemplo V0.3.10, a **V0.3.13** sin pasar por las versiones de prueba V0.3.11/12. **No** copiar solo archivos Python al programa PyInstaller.
 - El repositorio contiene fuentes y plantilla sin datos personales; no incluye historiales de compras, Excel reales ni copias de seguridad.
 - La compilación del EXE debe ejecutarse y verificarse en Windows.
+
+## Ejecutables, instalador base y actualizaciones
+
+Consulta [Estado de los ejecutables Windows](docs/ESTADO_EJECUTABLES_WINDOWS.md). **El instalador V0.3.9 no está publicado en este repositorio ni en una Release**. La V0.3.9 es la instalación histórica de Windows, sobre la que se aplican las actualizaciones. El script `COMPILAR_PORTABLE_WINDOWS.bat` compila el programa *actual* V0.3.13, **no** recupera el ejecutable original V0.3.9. Para evitar el error de rutas largas de Windows, el entorno de compilación se crea bajo `%LOCALAPPDATA%\CCBuild313`.
