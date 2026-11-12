@@ -28,3 +28,7 @@ La actualización V0.3.13 debe sustituir el ejecutable y la carpeta `_internal`,
 ## Compilación portable actual
 
 Ejecutar `COMPILAR_PORTABLE_WINDOWS.bat` en Windows con Python 3.10+; utilizará una ruta corta bajo `%LOCALAPPDATA%\\CCBuild313` para evitar los fallos de longitud de ruta de `pip`/PyInstaller. El EXE resultante debe validarse en Windows antes de distribuirlo. El script no crea un instalador Inno Setup ni publica una Release.
+
+## Fuentes históricas recuperadas (12/11/2026)
+
+Se han añadido a [`historico/v0.3.9/`](../historico/v0.3.9/) los archivos `.iss` y `CREAR_INSTALADOR_WINDOWS.bat` originales, más un manifiesto del paquete de fuentes V0.3.9 disponible para descargar en la conversación. **Estos ficheros no son el EXE compilado**. El código completo histórico sigue pendiente de incorporarse a GitHub; no está en el historial anterior de `main` (que comienza con V0.3.11). No hay Release de V0.3.9. Para publicarla habrá que encontrar el EXE original en el PC de compilación, verificarlo y adjuntarlo manualmente como asset de Release, porque el acceso actual a GitHub no permite subir archivos binarios a Releases.
