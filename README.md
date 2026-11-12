@@ -47,6 +47,10 @@ El código de Suite CAD V0.4 es independiente y no está incluido aquí.
 - El repositorio contiene fuentes y plantilla sin datos personales; no incluye historiales de compras, Excel reales ni copias de seguridad.
 - La compilación del EXE debe ejecutarse y verificarse en Windows.
 
+## Histórico de la instalación base V0.3.9
+
+En [`historico/v0.3.9/`](historico/v0.3.9/) se conservan el proyecto **Inno Setup V0.3.9** y el BAT de compilación original recuperados de los fuentes históricos. El paquete completo de fuentes V0.3.9 se ha recuperado y comprobado fuera de GitHub, pero sus demás ficheros de código todavía no están incorporados al repositorio. No hay ningún `.exe` de V0.3.9 publicado ni una Release que lo contenga. La rama `main` representa la versión V0.3.13 y NO debe presentarse como código V0.3.9.
+
 ## Ejecutables, instalador base y actualizaciones
 
 Consulta [Estado de los ejecutables Windows](docs/ESTADO_EJECUTABLES_WINDOWS.md). **El instalador V0.3.9 no está publicado en este repositorio ni en una Release**. La V0.3.9 es la instalación histórica de Windows, sobre la que se aplican las actualizaciones. El script `COMPILAR_PORTABLE_WINDOWS.bat` compila el programa *actual* V0.3.13, **no** recupera el ejecutable original V0.3.9. Para evitar el error de rutas largas de Windows, el entorno de compilación se crea bajo `%LOCALAPPDATA%\CCBuild313`.
