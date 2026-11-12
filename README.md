@@ -43,6 +43,6 @@ El código de Suite CAD V0.4 es independiente y no está incluido aquí.
 - Selección de año/mes, incluye categorías originales y personalizadas activas con gasto, importes y porcentajes.
 - No duplica anotaciones: toma los totales de Gastos del mes; muestra aviso si hay ajustes negativos.
 - **Gráficas anuales** sin cambios en su agrupación original.
-- Para actualizar el ejecutable instalado de V0.3.11 a V0.3.13, se distribuye un actualizador Windows independiente. **No** copiar solo archivos Python al programa PyInstaller.
+- **Instalación base V0.3.9** (Inno Setup): el actualizador lleva directamente la versión que se esté ejecutando, por ejemplo V0.3.10, a **V0.3.13** sin pasar por las versiones de prueba V0.3.11/12. **No** copiar solo archivos Python al programa PyInstaller.
 - El repositorio contiene fuentes y plantilla sin datos personales; no incluye historiales de compras, Excel reales ni copias de seguridad.
 - La compilación del EXE debe ejecutarse y verificarse en Windows.
