@@ -1,0 +1,23 @@
+# No subir datos de usuario ni compilados
+**/Cuentas.xlsx
+**/Gastos_detallados.json
+**/perfiles.json
+**/Copias_seguridad/
+**/Datos_Prueba/
+**/Datos_Personales/
+**/backups/
+*.xlsx
+!app/Plantilla_Cuentas.xlsx
+*.zip
+*.log
+*.exe
+*.spec
+.venv/
+.entorno_compilacion/
+build/
+dist/
+Salida/
+__pycache__/
+*.pyc
+.env
+.env.*

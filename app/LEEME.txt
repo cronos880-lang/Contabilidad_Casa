@@ -1,0 +1,1 @@
+Contabilidad Casa V0.3.9. La primera instalacion no contiene datos personales. Usa Mis contabilidades para crear una vacia o importar una copia completa ZIP. La pantalla abre en el mes y ano actuales. El instalador abre una ventana independiente y maximizada. Los datos estan separados del programa.

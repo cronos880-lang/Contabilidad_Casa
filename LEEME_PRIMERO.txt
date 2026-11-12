@@ -1,0 +1,76 @@
+CORRECCION DE LA COMPILACION (MISMA VERSION V0.3.9)
+------------------------------------------------
+- Se crea la carpeta Salida ANTES de empezar la compilacion.
+- Si algo falla, la ventana no se cierra: indica el paso y la causa.
+- Se guarda COMPILACION_V0.3.9.log en la misma carpeta del BAT.
+- Se comprueba de verdad que exista el EXE final.
+- Se busca Inno Setup en distintas ubicaciones y se permite indicar ISCC.exe.
+- Es necesario descomprimir TODO el ZIP: no ejecutes el BAT dentro del ZIP.
+- Los datos de las contabilidades no se incluyen ni se modifican.
+- Si no hay EXE en Salida, enviame el archivo COMPILACION_V0.3.9.log.
+
+CONTABILIDAD CASA V0.3.9 — INSTALADOR PARA WINDOWS
+==================================================
+
+EDICION EN BLANCO Y PARA CUALQUIER USUARIO
+-----------------------------------------
+Basada en la V0.3.8. No contiene los datos de ninguna persona.
+No incluye Cuentas.xlsx personal, Gastos_detallados.json, perfiles.json ni backups.
+Solo incluye Plantilla_Cuentas.xlsx nueva, con importes vacios y nombres genericos.
+
+PRIMER ARRANQUE
+--------------
+- Se abre una ventana de Windows independiente, MAXIMIZADA (no modo pantalla completa F11).
+- Si no existe ninguna contabilidad en el equipo, 'Mis contabilidades' aparece vacio.
+- Puedes crear una contabilidad nueva o importar tu copia ZIP completa.
+- Si actualizas desde una version anterior y ya hay perfiles, se CONSERVAN.
+
+FECHA Y MES AL ABRIR
+--------------------
+- Al arrancar y cada vez que abres una contabilidad, el programa escoge
+  automaticamente el MES ACTUAL y el ANO ACTUAL del reloj del ordenador.
+- Puedes seleccionar otro mes o ano manualmente.
+- Las hojas del Excel incluido solo contemplan 2026 y 2027. A partir de 2028
+  habra que ampliar el soporte de anos: en ese caso abre el ultimo ano disponible
+  y el mes actual, sin inventar datos de un ano que no existe en el Excel.
+
+COMO CREAR EL INSTALADOR EN WINDOWS
+----------------------------------
+1. Descomprime TODO este ZIP en una carpeta.
+2. Ten instalados Python 3, Inno Setup 6 y conexion a Internet durante la compilacion.
+3. Haz doble clic en CREAR_INSTALADOR_WINDOWS.bat.
+4. El resultado aparecera en Salida/Instalar_Contabilidad_Casa_V0.3.9.exe.
+5. Instala ese EXE en cualquier PC con Windows 10/11 (64 bits).
+
+NO hace falta Python en el PC en el que se instala la aplicacion terminada.
+La compilacion usa PyInstaller en modo ONEDIR y pywebview con WebView2.
+El WebView2 Runtime de Microsoft debe estar instalado (habitual en Windows 11).
+Si falta: https://developer.microsoft.com/en-us/microsoft-edge/webview2/
+
+SEGURIDAD DE LOS DATOS
+---------------------
+Cada contabilidad tiene su propia carpeta (seleccionable al crearla) con:
+- Cuentas.xlsx
+- Gastos_detallados.json
+- Copias_seguridad/
+La lista de contabilidades se guarda en:
+  %LOCALAPPDATA%\ContabilidadCasaV031\perfiles.json
+La desinstalacion NO elimina esas carpetas de datos. Una reinstalacion
+seguira accediendo a ellas si no han sido movidas.
+
+PARA RECUPERAR TUS DATOS ANTERIORES
+---------------------------------
+En la pantalla 'Mis contabilidades', usa 'Elegir copia ZIP e importar'.
+El ZIP debe haberse creado con el boton 'Guardar copia completa' del programa,
+no simplemente comprimiendo un Excel. Conserva el ZIP fuera del PC.
+NO modifiques o borres ninguna carpeta antigua hasta verificar el resultado.
+
+IMPORTANTES LIMITACIONES
+-----------------------
+- Este archivo ZIP es el PROYECTO PARA GENERAR el instalador, NO un EXE ya compilado.
+- Se ha preparado y comprobado el codigo, pero la compilacion Windows y el
+  funcionamiento de WebView2 deben verificarse en un PC Windows.
+- Un ejecutable sin firma digital podria activar avisos de Windows Defender.
+  No desactives el antivirus ni anadas exclusiones para instalarlo.
+- Sin scripts PowerShell ocultos, VBS, politica de ejecucion ni exe empaquetado
+  con compresion UPX. Los fuentes de la aplicacion son visibles.
