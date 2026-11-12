@@ -4,7 +4,7 @@
 
 Se recuperaron los archivos de construcción V0.3.9 de un paquete generado anteriormente en la conversación. En este directorio se conservan los dos ficheros **originales** de configuración del instalador: el proyecto Inno Setup y el BAT de construcción (sin datos personales). El ZIP completo de fuentes recuperadas incluye también `Contabilidad_Casa.py`, `Contabilidad_Casa_Windows.py`, `perfiles.py`, `web/`, la plantilla vacía y el icono, pero **todavía no se ha incorporado ese ZIP completo a GitHub**.
 
-**No existe en GitHub el instalador compilado `Instalar_Contabilidad_Casa_V0.3.9.exe`**, ni se ha localizado en los archivos disponibles del proyecto. No debe confundirse con el antiguo instalador V0.3 ni con la herramienta para compilar el instalador.
+**El instalador compilado `Instalar_Contabilidad_Casa_V0.3.9.exe` ya ha sido entregado por el usuario y verificado estáticamente.** Sus metadatos y SHA-256 se registran en [INSTALADOR_BASE_SHA256.txt](INSTALADOR_BASE_SHA256.txt). **El EXE no está todavía adjunto a ninguna Release de GitHub.** No debe confundirse con el antiguo instalador V0.3 ni con la herramienta para compilar el instalador.
 
 Para mantener un histórico auténtico, no se reemplaza el código V0.3.9 por código V0.3.13 ni se etiqueta un EXE posterior como V0.3.9.
 
@@ -18,4 +18,4 @@ Para mantener un histórico auténtico, no se reemplaza el código V0.3.9 por c�
 
 ## Pendientes
 1. Subir el ZIP de fuentes V0.3.9 a una publicación histórica o incorporar sus archivos al repositorio, sin datos personales.
-2. Recuperar el **EXE original V0.3.9** del ordenador donde se compiló, comprobarlo y publicar una Release con el SHA-256 del instalador.
+2. Publicar el EXE original V0.3.9 (ya recibido) como asset de una Release, después de analizarlo con Microsoft Defender; consignar su SHA-256 documentado. Las herramientas de GitHub disponibles en esta sesión no admiten adjuntar archivos binarios a Releases.
