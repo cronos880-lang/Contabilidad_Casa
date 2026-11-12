@@ -32,3 +32,7 @@ Ejecutar `COMPILAR_PORTABLE_WINDOWS.bat` en Windows con Python 3.10+; utilizará
 ## Fuentes históricas recuperadas (12/11/2026)
 
 Se han añadido a [`historico/v0.3.9/`](../historico/v0.3.9/) los archivos `.iss` y `CREAR_INSTALADOR_WINDOWS.bat` originales, más un manifiesto del paquete de fuentes V0.3.9 disponible para descargar en la conversación. **Estos ficheros no son el EXE compilado**. El código completo histórico sigue pendiente de incorporarse a GitHub; no está en el historial anterior de `main` (que comienza con V0.3.11). No hay Release de V0.3.9. Para publicarla habrá que encontrar el EXE original en el PC de compilación, verificarlo y adjuntarlo manualmente como asset de Release, porque el acceso actual a GitHub no permite subir archivos binarios a Releases.
+
+## Comprobación de archivo original recibido (12/11/2026)
+
+Se recibió `Instalar_Contabilidad_Casa_V0.3.9.exe` (17.117.337 bytes). El archivo presenta estructura de Inno Setup 6.7.0 y metadatos de versión 0.3.9. SHA-256: `c7b7aece9eb135e5c56cd9d0731c036e937f9f160425d4540edcc20fffb67aa0`. No se encontró firma Authenticode; la revisión estática **no sustituye** un análisis antivirus ni la validación en Windows. El checksum está publicado en [historico/v0.3.9/INSTALADOR_BASE_SHA256.txt](../historico/v0.3.9/INSTALADOR_BASE_SHA256.txt). **El archivo ejecutable aún no se ha adjuntado a una Release**: el conector GitHub disponible no admite la subida de binarios a Assets.
