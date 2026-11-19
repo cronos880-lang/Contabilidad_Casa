@@ -1,0 +1,111 @@
+name: Instalador Contabilidad Casa V0.3.14 (Windows)
+on:
+  push:
+    branches: [version/v0.3.14-windows]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  windows-exe:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Comprobar código y ausencia de modo de prueba
+        shell: pwsh
+        run: |
+          python -m py_compile Contabilidad_Casa.py Contabilidad_Casa_Windows.py perfiles.py
+          node --check web/app.js
+          if (Select-String -Path Contabilidad_Casa.py,Contabilidad_Casa_Windows.py -Pattern 'configure_test_mode|MODO_PRUEBA' -Quiet) { throw 'Modo de prueba encontrado en la versión instalable' }
+          if (Select-String -Path Contabilidad_Casa.py -Pattern 'VERSION = "V0.3.14"' -Quiet) { Write-Host 'Versión V0.3.14 verificada' } else { throw 'Versión incorrecta' }
+          if (-not (Test-Path 'Plantilla_Cuentas.xlsx')) { throw 'Falta la plantilla genérica' }
+          if (Test-Path 'Cuentas.xlsx') { throw 'No se permite incorporar contabilidades reales' }
+          if (Test-Path 'Gastos_detallados.json') { throw 'No se permite incorporar gastos reales' }
+      - name: Instalar dependencias utilizadas en la versión anterior
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check 'PyInstaller==6.22.3' 'pywebview==6.2.1'
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudieron instalar dependencias' }
+          $a = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          $b = "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $a) -and -not (Test-Path $b)) {
+            choco install innosetup -y --no-progress
+            if ($LASTEXITCODE -ne 0) { throw 'Fallo al instalar Inno Setup 6' }
+          }
+      - name: Construir ejecutable nativo con PyInstaller
+        shell: pwsh
+        run: |
+          $repo = (Get-Location).Path
+          $dist = Join-Path $repo 'dist'
+          $work = Join-Path $env:RUNNER_TEMP 'CC314work'
+          $spec = Join-Path $env:RUNNER_TEMP 'CC314spec'
+          New-Item -ItemType Directory -Force $work, $spec | Out-Null
+          python -m PyInstaller --noconfirm --clean --onedir --windowed --noupx --name ContabilidadCasa --icon "$repo\Contabilidad_Casa.ico" --distpath "$dist" --workpath "$work" --specpath "$spec" --paths "$repo" --add-data "$repo\web;web" --add-data "$repo\Plantilla_Cuentas.xlsx;." --collect-all webview --collect-all pythonnet --collect-all clr_loader --hidden-import clr --hidden-import tkinter --hidden-import tkinter.filedialog --hidden-import webview.platforms.winforms "$repo\Contabilidad_Casa_Windows.py"
+          if ($LASTEXITCODE -ne 0) { throw 'PyInstaller falló' }
+          if (-not (Test-Path 'dist\ContabilidadCasa\ContabilidadCasa.exe')) { throw 'Falta EXE' }
+          if (-not (Test-Path 'dist\ContabilidadCasa\_internal\web\app.js')) { throw 'Falta JavaScript' }
+          if (-not (Test-Path 'dist\ContabilidadCasa\_internal\Plantilla_Cuentas.xlsx')) { throw 'Falta plantilla' }
+      - name: Compilar instalador Inno Setup
+        shell: pwsh
+        run: |
+          $path1 = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          $path2 = "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
+          $iscc = if (Test-Path $path1) { $path1 } elseif (Test-Path $path2) { $path2 } else { (Get-Command ISCC.exe -ErrorAction Stop).Source }
+          & $iscc 'Instalador_Contabilidad_Casa_V0.3.14.iss'
+          if ($LASTEXITCODE -ne 0) { throw 'Inno Setup falló' }
+          $exe = 'Salida\Instalar_Contabilidad_Casa_V0.3.14.exe'
+          if (-not (Test-Path $exe)) { throw 'No se generó instalador' }
+          if ((Get-Item $exe).Length -lt 1000000) { throw 'El instalador es anormalmente pequeño' }
+          Get-FileHash $exe -Algorithm SHA256 | Format-List | Out-String | Set-Content 'Salida\SHA256_V0.3.14.txt' -Encoding UTF8
+      - name: Empaquetar descarga ZIP verificable
+        shell: pwsh
+        run: |
+          @'
+          Contabilidad Casa V0.3.14 - Instalador Windows
+          1. Antes de desinstalar, exporta una copia ZIP completa de CADA contabilidad.
+          2. Conserva tus datos, Cuentas.xlsx, Gastos_detallados.json, Copias_seguridad y perfiles.json.
+          3. Cierra la aplicación; desinstala Contabilidad Casa desde Aplicaciones instaladas.
+          4. Ejecuta Instalar_Contabilidad_Casa_V0.3.14.exe.
+          5. Verifica la versión de la aplicación y tus perfiles tras abrir.
+          Las carpetas de contabilidades y %LOCALAPPDATA%\ContabilidadCasaV031 no forman parte del instalador y no se borran.
+          Conserva el instalador V0.3.9 para recuperación histórica.
+          '@ | Set-Content 'Salida\LEEME_ANTES_DE_INSTALAR.txt' -Encoding UTF8
+          New-Item -ItemType Directory -Force 'entregas' | Out-Null
+          Compress-Archive -Path 'Salida\Instalar_Contabilidad_Casa_V0.3.14.exe','Salida\SHA256_V0.3.14.txt','Salida\LEEME_ANTES_DE_INSTALAR.txt' -DestinationPath 'entregas\Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip' -CompressionLevel Optimal
+          if (-not (Test-Path 'entregas\Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip')) { throw 'No hay ZIP final' }
+          Get-FileHash 'entregas\Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip' -Algorithm SHA256 | Format-List
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Contabilidad_Casa_V0.3.14_Instalador_Windows
+          path: |
+            Salida/Instalar_Contabilidad_Casa_V0.3.14.exe
+            Salida/SHA256_V0.3.14.txt
+            entregas/Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip
+          retention-days: 90
+          if-no-files-found: error
+      - name: Publicar ZIP en rama de entrega sin afectar main
+        shell: pwsh
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f 'entregas/Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip'
+          git commit -m 'Entrega Windows V0.3.14: instalador generado y comprobado'
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo crear commit del ZIP' }
+          git push origin HEAD:version/v0.3.14-windows
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo publicar ZIP en GitHub' }
+      - name: Publicar release al terminar compilación correcta
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = 'v0.3.14'
+          $target = (git rev-parse HEAD).Trim()
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) { throw 'La Release ya existe. No se sobrescribirá.' }
+          gh release create $tag 'Salida/Instalar_Contabilidad_Casa_V0.3.14.exe' 'entregas/Contabilidad_Casa_V0.3.14_INSTALADOR_WINDOWS.zip' 'Salida/SHA256_V0.3.14.txt' --title 'Contabilidad Casa V0.3.14 - Instalador Windows' --notes 'Instalación completa Windows; conserva perfiles y datos fuera del programa. Realiza una copia de seguridad antes de desinstalar. No probada todavía en el Windows del usuario.' --target $target
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo publicar la Release' }

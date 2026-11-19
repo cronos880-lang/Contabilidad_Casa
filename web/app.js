@@ -10,7 +10,9 @@
     {label:'Gastos variables', start:30, end:34},
     {label:'Hipoteca', start:35, end:35},
   ];
-  const chartColors = ['#4574df','#22a185','#ec9c3b','#a064d1','#db5f82'];
+  // Color fijo para cada grupo en todos los ejercicios.
+  const chartColors = ['#356BC9','#139A8B','#D9952C','#8C63C7','#D45C76'];
+  const bankColors = ['#356BC9','#139A8B','#D9952C'];
   const $selectYear = $('year'), $selectMonth = $('month');
 
   function formAmount(value){return value === null || value === undefined || value === '' ? '' : Number(value).toFixed(2).replace('.', ',')}
@@ -561,6 +563,7 @@
     const months=data.months;
     const {card,body}=chartCard('1. Evolución de las cuentas bancarias',
       'Tres barras por mes: cada cuenta y su total. Debajo, la diferencia del total frente al mes anterior (verde si sube y rojo si baja).');
+    card.classList.add('chart-card-polished');
     if(!data.bankAvailable){
       body.appendChild(emptyChart('Tu Excel todavía no tiene saldos bancarios mensuales para este año.'));
       return card;
@@ -571,12 +574,12 @@
     const width=900,height=335,left=58,right=16,top=18,bottom=82;
     const pw=width-left-right,ph=height-top-bottom,slot=pw/12;
     const barW=Math.min(17,slot*.22),gap=2;
-    const colors=['#4169bb','#22a185','#e2a347'];
+    const colors=bankColors;
     const labels=[...(data.bankNames||['Cuenta 1','Cuenta 2']),'Total de cuentas'];
-    const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg',role:'img','aria-label':'Saldos bancarios mensuales por cuenta y total'});
+    const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg chart-banks-svg',role:'img','aria-label':'Saldos bancarios mensuales por cuenta y total'});
     for(let t=0;t<=4;t++){
       const y=top+ph*t/4;
-      svg.append(svgEl('line',{x1:left,y1:y,x2:width-right,y2:y,stroke:'#e5eaf2'}));
+      svg.append(svgEl('line',{x1:left,y1:y,x2:width-right,y2:y,class:'chart-grid-line'}));
       const v=svgEl('text',{x:left-8,y:y+4,'text-anchor':'end',class:'axis-text'});
       v.textContent=new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}).format(max*(4-t)/4);
       svg.append(v);
@@ -602,12 +605,12 @@
       if(m.bankTotal===null)return;
       [m.bankCaixa,m.bankSabadell,m.bankTotal].forEach((v,k)=>{
         const h=Math.max(v>0?2:0,(v||0)/max*ph);
-        const rect=svgEl('rect',{x:center-(1.5*barW+gap)+k*(barW+gap),y:top+ph-h,width:barW,height:h,rx:2,fill:colors[k]});
+        const rect=svgEl('rect',{x:center-(1.5*barW+gap)+k*(barW+gap),y:top+ph-h,width:barW,height:h,rx:3,fill:colors[k],class:'chart-bank-bar'});
         const tooltip=svgEl('title'); tooltip.textContent=`${m.name} · ${labels[k]}: ${display(v)}`;rect.append(tooltip);
         svg.append(rect);
       });
     });
-    body.append(svg);
+    const holder=document.createElement('div');holder.className='chart-horizontal-scroll';holder.append(svg);body.append(holder);
     const legend=document.createElement('div');legend.className='chart-legend';
     labels.forEach((x,i)=>{
       const span=document.createElement('span');
@@ -622,14 +625,15 @@
   function renderExcelYearComparison(data){
     const {card,body}=chartCard('2. Comparación entre años',
       'Como en el Excel: compara las cuentas y su total al inicio de cada año registrado.');
+    card.classList.add('chart-card-polished');
     const compare=(data.bankComparison||[]).filter(r=>r.caixa>0||r.sabadell>0);
     if(!compare.length){body.appendChild(emptyChart('Aún no hay saldos iniciales por año para comparar.'));return card;}
-    const colors=['#4169bb','#22a185','#e2a347','#a064d1'];
+    const colors=bankColors;
     const labels=[...(data.bankNames||['Cuenta 1','Cuenta 2']),'Total'];
     const values=compare.map(x=>[x.caixa,x.sabadell,x.caixa+x.sabadell]);
     const max=Math.max(1,...values.flat());
     const width=850,left=108,right=65,top=20,rowGap=94,height=top+compare.length*rowGap+26,pw=width-left-right;
-    const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg',role:'img','aria-label':'Comparación horizontal de bancos por año'});
+    const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg chart-comparison-svg',role:'img','aria-label':'Comparación horizontal de bancos por año'});
     compare.forEach((row,j)=>{
       const base=top+j*rowGap;
       const yLabel=svgEl('text',{x:10,y:base+30,class:'year-axis-text'});yLabel.textContent=row.year;
@@ -639,123 +643,118 @@
         const label=svgEl('text',{x:left-8,y:y+14,'text-anchor':'end',class:'axis-text'});
         label.textContent=labels[k];svg.append(label);
         const w=(Math.max(0,v)/max)*pw;
-        const bar=svgEl('rect',{x:left,y:y+1,width:w,height:17,rx:3,fill:colors[k]});
+        const bar=svgEl('rect',{x:left,y:y+1,width:w,height:17,rx:4,fill:colors[k],class:'chart-bank-bar'});
         const tt=svgEl('title');tt.textContent=`${row.year} · ${labels[k]}: ${display(v)}`;bar.append(tt);svg.append(bar);
         const amount=svgEl('text',{x:Math.min(width-58,left+w+7),y:y+15,class:'axis-text'});
         amount.textContent=new Intl.NumberFormat('es-ES',{maximumFractionDigits:0}).format(v);
         svg.append(amount);
       });
     });
-    body.append(svg);
+    const holder=document.createElement('div');holder.className='chart-horizontal-scroll';holder.append(svg);body.append(holder);
     return card;
   }
 
-  function renderDonutChart(groupsData){
-    const clean = groupsData.filter(g=>g.value>0).sort((a,b)=>b.value-a.value);
-    const {card, body} = chartCard('3. ¿En qué se va el dinero?', 'Resumen del gasto acumulado por grandes bloques. Sirve para ver de un vistazo qué pesa más en casa.');
-    if(!clean.length){ body.appendChild(emptyChart('Todavía no hay gastos acumulados para repartir por bloques.')); return card; }
-    const total = clean.reduce((sum,g)=>sum+g.value,0);
-    const wrap = document.createElement('div');
-    wrap.className = 'donut-layout';
-    const svg = svgEl('svg',{viewBox:'0 0 240 240', class:'donut-svg', role:'img', 'aria-label':'Reparto del gasto anual'});
-    const cx=120, cy=120, r=78, circ=2*Math.PI*r;
-    let offset = 0;
-    clean.forEach((g,i)=>{
-      const frac = g.value/total;
-      const len = frac*circ;
-      const circle = svgEl('circle',{cx,cy,r,fill:'none',stroke:chartColors[i%chartColors.length],'stroke-width':'28','stroke-linecap':'butt',transform:'rotate(-90 120 120)','stroke-dasharray':`${len} ${circ-len}`,'stroke-dashoffset':`${-offset}`});
-      const title = document.createElementNS('http://www.w3.org/2000/svg','title');
-      title.textContent = `${g.name}: ${display(g.value)} (${(frac*100).toFixed(1)}%)`;
-      circle.appendChild(title);
-      svg.appendChild(circle);
-      offset += len;
-    });
-    svg.appendChild(svgEl('circle',{cx,cy,r:'49',fill:'white'}));
-    const centerTop = svgEl('text',{x:120,y:112,'text-anchor':'middle',class:'donut-center-title'}); centerTop.textContent='Total';
-    const centerVal = svgEl('text',{x:120,y:134,'text-anchor':'middle',class:'donut-center-value'}); centerVal.textContent=displayCompact(total);
-    svg.append(centerTop, centerVal);
-    wrap.appendChild(svg);
-    const legend = document.createElement('div');
-    legend.className = 'donut-legend';
-    clean.forEach((g,i)=>{
-      const item = document.createElement('div');
-      const pct = total ? (g.value/total*100).toFixed(1) : '0.0';
-      item.innerHTML = `<span class="legend-name"><i class="legend-dot" style="background:${chartColors[i%chartColors.length]}"></i>${g.name}</span><strong>${display(g.value)}</strong><small>${pct}%</small>`;
-      legend.appendChild(item);
-    });
-    wrap.appendChild(legend);
-    body.appendChild(wrap);
-    return card;
-  }
+  const palette = ["#356BC9","#158F80","#E1A23F","#8861BC","#D65E73","#4189B6","#689946","#C77943","#7469BD","#3B9AA0","#B48A37","#B65D9C","#6385AD","#8A58C3","#3F906C","#A46D98","#508CC5","#B85E55","#8A9840","#4F78C5","#B672AA","#3D9B75","#C34E68","#6988A0","#B65C83","#649452","#3971C9"];
+  function categoryColor(id){
+ const code=String(id);if(/^base-\d+$/.test(code)){const row=Number(code.slice(5));if(row>=9&&row<=35)return palette[row-9]}
+ let hash=2166136261;for(let i=0;i<code.length;i++)hash=Math.imul(hash^code.charCodeAt(i),16777619)>>>0;
+ return `hsl(${hash%360} ${62+(hash%3)*4}% ${40+(hash%4)*3}%)`;
+}
 
-  // V0.3.13: el reparto mensual usa cada categoría independiente;
-  // nunca se duplican las compras ya incorporadas a los importes de Gastos del mes.
-  function colorForMonthlyCategory(id){
-    const value=String(id);
-    if(/^base-\d+$/.test(value)){
-      const row=Number(value.slice(5));
-      return 'hsl('+Math.round((210+(row-9)*137.508)%360)+' 69% 47%)';
-    }
-    let hash=2166136261;
-    for(let i=0;i<value.length;i++) hash=Math.imul(hash ^ value.charCodeAt(i),16777619)>>>0;
-    return 'hsl('+Math.round((hash*0.618033988749895)%360)+' 63% 45%)';
-  }
+  function groupColor(name){const i=groups.findIndex(g=>g.label===name);return chartColors[i>=0?i:0]}
+
+  function renderDonutChart(entries,opts={}){
+ const annual=!opts.monthly,period=annual?'el año':state.data.monthName.toLowerCase();
+ const title=annual?'3. ¿En qué se va el dinero?':`¿En qué categorías se va el dinero en ${period}?`;
+ const hint=annual?'Distribución anual por grupos, con colores estables entre años.':`Gastos de ${period} de ${state.year} desglosados por categoría individual.`;
+ const {card,body}=chartCard(title,hint);card.classList.add('chart-card-polished');
+ const clean=entries.filter(g=>Number.isFinite(Number(g.value))&&Number(g.value)>0)
+   .map(g=>({...g,value:Number(g.value)})).sort((a,b)=>b.value-a.value);
+ if(!clean.length){body.appendChild(emptyChart(annual?'Todavía no hay gastos acumulados para repartir por grupos.':`No hay gastos registrados en ${period} de ${state.year}.`));return card}
+ const cents=clean.reduce((acc,e)=>acc+Math.round(e.value*100),0),total=cents/100;
+ const negative=entries.reduce((acc,e)=>acc+Math.min(0,Math.round(Number(e.value||0)*100)),0);
+ const wrap=document.createElement('div');wrap.className='donut-layout donut-layout-refined';
+ const graphic=document.createElement('div');graphic.className='donut-graphic';
+ const svg=svgEl('svg',{viewBox:'0 0 280 280',class:'donut-svg donut-svg-refined',role:'group','aria-label':annual?'Gastos del año por grupos':'Gastos del mes por categorías'});
+ const cx=140,cy=140,r=91,circ=2*Math.PI*r;
+ svg.append(svgEl('circle',{cx,cy,r,fill:'none',stroke:'#EDF2F8','stroke-width':34}));
+ const middle=svgEl('circle',{cx,cy,r:68,fill:'#fff',stroke:'#F0F3F8','stroke-width':1});
+ let used=0;const segments=[],items=[];
+ const centerTitle=svgEl('text',{x:cx,y:cy-10,'text-anchor':'middle',class:'donut-center-title'});
+ const centerValue=svgEl('text',{x:cx,y:cy+14,'text-anchor':'middle',class:'donut-center-value'});
+ const centerSmall=svgEl('text',{x:cx,y:cy+34,'text-anchor':'middle',class:'donut-center-caption'});
+ const reset=()=>{
+   centerTitle.textContent=negative?'Gastos positivos':'Gasto total';
+   centerValue.textContent=total<100000?display(total):displayCompact(total);
+   centerSmall.textContent=`${clean.length} ${annual?'grupos':'categorías'}`;
+   segments.forEach(el=>el.classList.remove('is-selected','is-muted'));
+   items.forEach(el=>el.classList.remove('is-selected','is-muted'));
+ };
+ const activate=i=>{
+   const e=clean[i];
+   centerTitle.textContent=e.name.length>20?e.name.slice(0,19)+'…':e.name;
+   centerValue.textContent=e.value<100000?display(e.value):displayCompact(e.value);
+   centerSmall.textContent=(e.value/total*100).toFixed(1)+' % del reparto';
+   segments.forEach((el,j)=>{el.classList.toggle('is-selected',i===j);el.classList.toggle('is-muted',i!==j)});
+   items.forEach((el,j)=>{el.classList.toggle('is-selected',i===j);el.classList.toggle('is-muted',i!==j)});
+ };
+ const legend=document.createElement('div');
+ legend.className=annual?'donut-legend donut-legend-refined':'donut-legend donut-legend-refined monthly-category-legend';
+ clean.forEach((e,i)=>{
+   const frac=e.value/total,len=frac*circ,clr=annual?groupColor(e.name):categoryColor(e.categoryId);
+   const gap=clean.length>1?Math.min(2.3,len*.17):0;
+   const visible=Math.max(0,len-gap);
+   const seg=svgEl('circle',{cx,cy,r,fill:'none',stroke:clr,'stroke-width':30,
+     'stroke-linecap':'butt',transform:`rotate(-90 ${cx} ${cy})`,
+     'stroke-dasharray':`${visible} ${Math.max(0,circ-visible)}`,
+     'stroke-dashoffset':String(-used-gap/2),class:'donut-segment',tabindex:0,
+     'aria-label':`${e.name}: ${display(e.value)}, ${(frac*100).toFixed(1)} por ciento`});
+   const t=svgEl('title');t.textContent=`${e.name}: ${display(e.value)} (${(frac*100).toFixed(1)} %)`;seg.append(t);
+   svg.append(seg);segments.push(seg);used+=len;
+   const item=document.createElement('div');item.className='donut-legend-item';item.tabIndex=0;item.setAttribute('role','button');
+   item.setAttribute('aria-label',`${e.name}: ${display(e.value)}, ${(frac*100).toFixed(1)} por ciento`);
+   const name=document.createElement('span');name.className='legend-name';
+   const dot=document.createElement('i');dot.className='legend-dot';dot.style.background=clr;
+   name.append(dot,document.createTextNode(e.name));
+   const amt=document.createElement('strong');amt.textContent=display(e.value);
+   const pct=document.createElement('small');pct.textContent=(frac*100).toFixed(1)+' %';
+   item.append(name,amt,pct);
+   const enter=()=>activate(i);
+   const leave=()=>{if(!wrap.contains(document.activeElement))reset()};
+   for(const el of [seg,item]){
+     el.addEventListener('mouseenter',enter);el.addEventListener('mouseleave',leave);
+     el.addEventListener('focus',enter);
+     el.addEventListener('blur',()=>setTimeout(()=>{if(!wrap.contains(document.activeElement))reset()},0));
+   }
+   item.addEventListener('click',enter);
+   item.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();enter()}});
+   legend.append(item);items.push(item);
+ });
+ svg.append(middle,centerTitle,centerValue,centerSmall);reset();graphic.append(svg);
+ const helper=document.createElement('p');helper.className='donut-helper';
+ helper.textContent='Pasa el cursor o selecciona una categoría para ver el detalle.';
+ graphic.append(helper);wrap.append(graphic,legend);body.append(wrap);
+ if(negative){
+   const note=document.createElement('p');note.className='chart-adjustment-note';
+   note.textContent=`Los ajustes o devoluciones (${display(negative/100)}) no se dibujan como sectores. Total neto: ${display(total+negative/100)}. El anillo muestra exclusivamente gastos positivos.`;
+   body.append(note);
+ }
+ return card;
+}
+
+  function monthlyExpenseCategories(data){
+ const out=[];
+ for(const c of data.categories||[])out.push({categoryId:`base-${c.row}`,name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
+ for(const c of data.customExpenseCategories||[])out.push({categoryId:String(c.id),name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
+ return out;
+}
+
   function renderMonthlyChart(){
-    const d=state.data;
-    $('sectionTitle').textContent='Gráfica mensual · '+d.monthName+' '+state.year;
-    $('sectionHint').textContent='Selecciona un año y un mes arriba. Se muestra el gasto de cada categoría por separado.';
-    $('panelTools').hidden=true;
-    const entries=[];
-    for(const c of d.categories || []){
-      entries.push({id:'base-'+c.row,name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
-    }
-    for(const c of d.customExpenseCategories || []){
-      entries.push({id:String(c.id),name:String(c.name).toLocaleUpperCase('es-ES'),value:Math.round((Number(c.value)||0)*100)/100});
-    }
-    const positives=entries.filter(c=>c.value>0).sort((a,b)=>b.value-a.value);
-    const panel=chartCard('¿En qué categorías se va el dinero en '+d.monthName.toLowerCase()+'?',
-      'Gastos de '+d.monthName.toLowerCase()+' de '+state.year+', desglosados por categoría, incluidas las creadas por ti.');
-    $('content').appendChild(panel.card);
-    if(!positives.length){
-      panel.body.appendChild(emptyChart('No hay gastos registrados en '+d.monthName.toLowerCase()+' de '+state.year+'.'));
-      return;
-    }
-    const total=positives.reduce((sum,c)=>sum+c.value,0);
-    const wrap=document.createElement('div');wrap.className='donut-layout';
-    const svg=svgEl('svg',{viewBox:'0 0 240 240',class:'donut-svg',role:'img','aria-label':'Reparto mensual por categorías'});
-    const cx=120,cy=120,r=78,circ=2*Math.PI*r;
-    let offset=0;
-    positives.forEach(c=>{
-      const frac=c.value/total,len=frac*circ;
-      const circle=svgEl('circle',{cx,cy,r,fill:'none',stroke:colorForMonthlyCategory(c.id),'stroke-width':'28',
-        'stroke-linecap':'butt',transform:'rotate(-90 120 120)',
-        'stroke-dasharray':String(len)+' '+String(Math.max(0,circ-len)), 'stroke-dashoffset':String(-offset)});
-      const title=svgEl('title');
-      title.textContent=c.name+': '+display(c.value)+' ('+(frac*100).toFixed(1)+'%)';
-      circle.appendChild(title);svg.appendChild(circle);offset+=len;
-    });
-    svg.appendChild(svgEl('circle',{cx,cy,r:49,fill:'white'}));
-    const title=svgEl('text',{x:120,y:112,'text-anchor':'middle',class:'donut-center-title'});
-    title.textContent='Total';
-    const value=svgEl('text',{x:120,y:134,'text-anchor':'middle',class:'donut-center-value'});
-    value.textContent=displayCompact(total);svg.append(title,value);wrap.appendChild(svg);
-    const legend=document.createElement('div');legend.className='donut-legend monthly-category-legend';
-    positives.forEach(c=>{
-      const item=document.createElement('div'), name=document.createElement('span');
-      name.className='legend-name';
-      const dot=document.createElement('i');dot.className='legend-dot';dot.style.background=colorForMonthlyCategory(c.id);
-      name.append(dot,document.createTextNode(c.name));
-      const amt=document.createElement('strong');amt.textContent=display(c.value);
-      const percent=document.createElement('small');percent.textContent=(c.value/total*100).toFixed(1)+'%';
-      item.append(name,amt,percent);legend.appendChild(item);
-    });
-    wrap.appendChild(legend);panel.body.appendChild(wrap);
-    if(entries.some(c=>c.value<0)){
-      const note=document.createElement('p');note.className='chart-adjustment-note';
-      note.textContent='Las devoluciones o ajustes negativos no se dibujan como sectores del gráfico.';
-      panel.body.appendChild(note);
-    }
-  }
+ $('sectionTitle').textContent=`Gráfica mensual · ${state.data.monthName} ${state.year}`;
+ $('sectionHint').textContent='Selecciona el año y el mes arriba. Verás cada categoría que tenga gastos, no solo los grupos generales.';
+ $('panelTools').hidden=true;
+ $('content').appendChild(renderDonutChart(monthlyExpenseCategories(state.data),{monthly:true}));
+}
 
   function renderCharts(){
     const annual = state.annual.get(state.year);

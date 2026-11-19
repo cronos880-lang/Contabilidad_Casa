@@ -109,9 +109,48 @@ button:disabled{cursor:not-allowed;opacity:.46}
 @media(max-width:1050px){.topbar{flex-wrap:wrap}.top-actions{flex-wrap:wrap;justify-content:flex-end}}
 @media(max-width:450px){.top-actions .top-exit{display:inline-flex!important}}
 
-/* V0.3.13: leyenda del gráfico mensual individual por categoría. */
+/* V0.3.14: leyenda del gráfico mensual individual por categoría. */
 .chart-adjustment-note{margin:12px 0 0;color:#697a97;font-size:12px;line-height:1.5}
 .monthly-category-legend{max-height:520px;overflow-y:auto;align-content:start;padding-right:5px}
 .monthly-category-legend div{grid-template-columns:minmax(0,1fr) auto auto}
 .monthly-category-legend .legend-name{overflow-wrap:anywhere;line-height:1.4;font-weight:650}
 @media(max-width:780px){.monthly-category-legend{max-height:none;overflow:visible}.monthly-category-legend div{grid-template-columns:minmax(0,1fr) auto auto}.monthly-category-legend small{grid-column:auto}}
+
+
+/* V0.3.14: afinado de gráficas sin tocar la lógica contable. */
+.chart-card-polished{border-color:#DFE6F0;box-shadow:0 10px 30px rgba(25,51,95,.045)}
+.chart-card-polished .chart-head{background:linear-gradient(135deg,#FBFCFF 0%,#F5F8FC 100%)}
+.chart-card-polished .chart-body{padding:20px 22px 22px}
+.chart-grid-line{stroke:#E8EDF5;stroke-width:1;stroke-dasharray:3 5}
+.chart-bank-bar{transition:opacity .16s ease,filter .16s ease;shape-rendering:geometricPrecision}
+.chart-bank-bar:hover{filter:brightness(1.1);opacity:.85}
+.chart-banks-svg,.chart-comparison-svg{background:#fff;overflow:visible}
+.chart-horizontal-scroll{max-width:100%;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#C9D5E5 transparent}
+.chart-legend{align-items:center;gap:10px 18px;margin-top:16px;padding:12px 14px;background:#F7F9FC;border:1px solid #EBEFF6;border-radius:10px}
+.chart-legend span{font-weight:650;white-space:normal}
+.chart-legend .legend-dot{width:11px;height:11px}
+.donut-layout-refined{grid-template-columns:minmax(230px,300px) minmax(0,1fr);gap:28px;align-items:center}
+.donut-graphic{min-width:0;text-align:center}
+.donut-svg-refined{max-width:290px;filter:drop-shadow(0 4px 8px rgba(15,39,78,.045))}
+.donut-segment{cursor:pointer;outline:none;transition:stroke-width .16s ease,opacity .16s ease;shape-rendering:geometricPrecision}
+.donut-segment.is-selected{stroke-width:35}
+.donut-segment.is-muted{opacity:.24}
+.donut-segment:focus-visible{stroke-width:35;filter:drop-shadow(0 0 2px rgba(20,40,75,.5))}
+.donut-center-title{fill:#71809A;font-size:11.5px;font-weight:650;letter-spacing:.2px}
+.donut-center-value{fill:#1A2B46;font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.55px}
+.donut-center-caption{fill:#91A0B5;font-size:9.5px;font-weight:550}
+.donut-helper{margin:-2px 0 0;color:#91A0B5;font-size:11px;line-height:1.5}
+.donut-legend-refined{gap:7px;max-height:none}
+.donut-legend-refined .donut-legend-item{grid-template-columns:minmax(0,1fr) auto auto;gap:10px;padding:11px 12px;background:#FBFCFF;border:1px solid #EBEFF6;border-radius:9px;cursor:pointer;outline:none;transition:background .16s,border-color .16s,opacity .16s,transform .16s}
+.donut-legend-refined .donut-legend-item:hover,.donut-legend-refined .donut-legend-item.is-selected{background:#EFF5FE;border-color:#CFDDF3;transform:translateX(2px)}
+.donut-legend-refined .donut-legend-item.is-muted{opacity:.47}
+.donut-legend-refined .donut-legend-item:focus-visible{outline:2px solid #547ECA;outline-offset:2px}
+.donut-legend-refined .legend-name{color:#304461;font-size:12px;font-weight:680;line-height:1.35;overflow-wrap:anywhere}
+.donut-legend-refined .legend-dot{width:11px;height:11px;flex:0 0 11px;margin-right:9px}
+.donut-legend-refined strong{color:#20334F;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.donut-legend-refined small{color:#7B8AA0;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;min-width:46px}
+.monthly-category-legend{max-height:500px;overflow-y:auto;overflow-x:hidden;padding:2px 5px 2px 1px}
+.chart-adjustment-note{background:#FFF8EB;border:1px solid #F4E1B9;color:#80551A;padding:12px 14px;border-radius:9px;line-height:1.55}
+@media(max-width:780px){.donut-layout-refined{grid-template-columns:1fr;gap:10px}.donut-svg-refined{max-width:270px}.monthly-category-legend{max-height:none;overflow:visible}.chart-card-polished .chart-body{padding:16px}}
+@media(max-width:600px){.chart-banks-svg{min-width:710px}.chart-comparison-svg{min-width:620px}.donut-legend-refined .donut-legend-item{grid-template-columns:minmax(0,1fr) auto auto}.donut-legend-refined small{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){.donut-segment,.donut-legend-refined .donut-legend-item,.chart-bank-bar{transition:none!important}}
